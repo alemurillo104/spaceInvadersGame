@@ -51,7 +51,7 @@ public class SpaceShipActor extends Actor {
         Vector2 pos = position;
         float posX = pos.x;
 
-        System.out.println(posX);
+//        System.out.println(posX);
 
         if (posX > (WIDTH - size)){
             derecha = false;

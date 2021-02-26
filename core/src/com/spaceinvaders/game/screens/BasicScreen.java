@@ -3,11 +3,11 @@ package com.spaceinvaders.game.screens;
 import com.badlogic.gdx.Screen;
 import com.spaceinvaders.game.MainGame;
 
-public class BaseScreen implements Screen {
+public class BasicScreen implements Screen {
 
     protected MainGame game;
 
-    public BaseScreen(MainGame mainGame){
+    public BasicScreen(MainGame mainGame){
         this.game = mainGame;
     }
 
