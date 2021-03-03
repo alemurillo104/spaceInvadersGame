@@ -1,44 +1,32 @@
 package com.spaceinvaders.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.spaceinvaders.game.controllers.EnemyController;
+import com.spaceinvaders.game.screens.GameScreen;
 
-public class MainGame extends ApplicationAdapter {
+public class MainGame extends Game {
 
-	SpriteBatch batch;
-	Texture enemyTexture;
-	EnemyController enemyController;
+	public GameScreen gameScreen;
 
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		enemyTexture = new Texture("enemy.png");
+	private AssetManager assetManager;
 
-		enemyController = new EnemyController(enemyTexture, batch);
+	public AssetManager getManager() {
+		return assetManager;
 	}
 
 	@Override
-	public void render () {
-		Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	public void create() {
 
-		batch.begin();
+		assetManager = new AssetManager();
+		assetManager.load("nave.png", Texture.class);
+		assetManager.load("enemy.png", Texture.class);
+		assetManager.load("enemyS.png", Texture.class);
+		assetManager.load("enemyS2.png", Texture.class);
+		assetManager.finishLoading();
 
-		enemyController.executeMovement();
-		enemyController.draw();
-
-		batch.end();
-	}
-
-	@Override
-	public void dispose () {
-		batch.dispose();
-		enemyTexture.dispose();
+		gameScreen = new GameScreen(this);
+		setScreen(gameScreen);
 	}
 }
 
