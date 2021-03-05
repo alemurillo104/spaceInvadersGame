@@ -4,15 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.spaceinvaders.game.MainGame;
 import com.spaceinvaders.game.actors.EnemyActor;
 import com.spaceinvaders.game.actors.NaveActor;
 import com.spaceinvaders.game.controllers.EnemyController;
-
-import java.util.Map;
 
 import static com.spaceinvaders.game.common.Constants.WIDTH;
 import static com.spaceinvaders.game.common.Constants.HEIGHT;
@@ -31,15 +28,16 @@ public class GameScreen extends BasicScreen {
 
     public void init(){
         stage = new Stage(new StretchViewport(WIDTH,HEIGHT));
-        enemyTexture = game.getManager().get("enemyS2.png");
+        enemyTexture = game.getManager().get("sprite3.png");
+        //enemyTexture = game.getManager().get("enemyS4.png");
         naveTexture = game.getManager().get("nave.png");
-        enemies = new EnemyController(enemyTexture);
-        naveActor = new NaveActor(naveTexture, Vector2.Zero);
+        naveActor = new NaveActor(naveTexture, new Vector2(WIDTH /2, 0));
+        enemies = new EnemyController(enemyTexture, naveActor.getPosition());
 
+        stage.addActor(naveActor);
         for (EnemyActor enemy: enemies.objects)
             stage.addActor(enemy);
 
-        stage.addActor(naveActor);
     }
 
     @Override
@@ -50,7 +48,7 @@ public class GameScreen extends BasicScreen {
         Gdx.gl.glClearColor(0.2f,0.5f,0.8f,1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        enemies.delEnemy();
+        enemies.getDelEnemy();
 
         stage.act();
         stage.draw();

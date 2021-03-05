@@ -21,8 +21,8 @@ public class MainGame extends Game {
 		assetManager = new AssetManager();
 		assetManager.load("nave.png", Texture.class);
 		assetManager.load("enemy.png", Texture.class);
-		assetManager.load("enemyS.png", Texture.class);
-		assetManager.load("enemyS2.png", Texture.class);
+		assetManager.load("enemyS4.png", Texture.class);
+		assetManager.load("sprite3.png", Texture.class);
 		assetManager.finishLoading();
 
 		gameScreen = new GameScreen(this);
