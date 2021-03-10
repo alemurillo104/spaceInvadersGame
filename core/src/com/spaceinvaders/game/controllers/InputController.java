@@ -8,8 +8,7 @@ import java.util.Map;
 
 public class InputController implements InputProcessor {
 
-    Map<String, Boolean> teclas;
-//    public boolean keyPressed;
+    public Map<String, Boolean> teclas;
 
     public InputController() {
         teclas = new HashMap<>();
@@ -18,20 +17,11 @@ public class InputController implements InputProcessor {
         teclas.put("PLAYER_RIGHT", false);
     }
 
-//    public void executeActions(){
-//        if (teclas.get("SPACE_SHOOT")){
-//
-//        }
-//    }
-
     @Override
     public boolean keyDown(int keycode) {
-//        if (keycode == Input.Keys.T) {
-//            keyPressed = true;
-//        }
+
         if (keycode == Input.Keys.NUMPAD_0){
             teclas.put("SPACE_SHOOT", true);
-
         }
 
         return false;
@@ -39,9 +29,6 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-//        if (keycode == Input.Keys.T) {
-//            keyPressed = false;
-//        }
 
         if (keycode == Input.Keys.NUMPAD_0){
             teclas.put("SPACE_SHOOT", false);
@@ -80,3 +67,4 @@ public class InputController implements InputProcessor {
         return false;
     }
 }
+

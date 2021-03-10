@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BalaActor extends Actor {
@@ -25,9 +24,6 @@ public class BalaActor extends Actor {
     private long startTime;
     private float timeS;
 
-//    private Vector2  posInicial, posPlayer;
-
-    private World world;
 
     public BalaActor(Texture texture, Vector2 position, Vector2 size,float dy, float timeL) {
         this.texture = texture;
@@ -46,7 +42,7 @@ public class BalaActor extends Actor {
         setSize(sWidth , sHeight);
     }
 
-    public BalaActor(Texture texture, Vector2 position, float dy, float timeL, World world) {
+    public BalaActor(Texture texture, Vector2 position, float dy, float timeL) {
 
         this.texture = texture;
         this.position = position;

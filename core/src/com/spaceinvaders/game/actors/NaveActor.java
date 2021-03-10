@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import static com.spaceinvaders.game.common.Constants.WIDTH;
@@ -27,9 +26,8 @@ public class NaveActor extends Actor {
     private boolean izquierda = false, derecha = true;
     private float valor = 3f;
 
-    private World world;
 
-    public NaveActor(Texture texture, Vector2 position, World world) {
+    public NaveActor(Texture texture, Vector2 position) {
         this.texture = texture;
         this.position = position;
         this.sWidth = 50;
@@ -39,12 +37,8 @@ public class NaveActor extends Actor {
         this.movementSpeed =  new Vector2( dx / timeL, dy/ timeL);
         this.isAlive = true;
 
-        this.world = world;
-
         setSize(sWidth, sHeight);
     }
-
-    public Vector2 getPosition() { return position; }
 
     public NaveActor(Texture texture, Vector2 position, float sWidth, float sHeight, float dx, float timeL) {
         this.texture = texture;
@@ -58,6 +52,8 @@ public class NaveActor extends Actor {
 
         setSize(sWidth,sHeight);
     }
+
+    public Vector2 getPosition() { return position; }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -75,18 +71,12 @@ public class NaveActor extends Actor {
             MoverX(-valor);
         }
 
-        //changeDir();
-        //if (derecha) MoverX(valor);
-        //if (izquierda) MoverX(-valor);
-
     }
 
     public void changeDir(){
 
         Vector2 pos = position;
         float posX = pos.x;
-
-        //System.out.println(posX);
 
         if (posX > (WIDTH - sWidth)){
             derecha = false;
@@ -105,6 +95,5 @@ public class NaveActor extends Actor {
 
     public void detach(){
         texture.dispose();
-
     }
 }
