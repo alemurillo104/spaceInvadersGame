@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import static com.spaceinvaders.game.common.Constants.HEIGHT;
@@ -28,6 +29,8 @@ public class EnemyActor extends Actor {
 
     private Vector2  posInicial, posPlayer;
 
+    private World world;
+
     //Añadiendo para el Sprite
     private Animation animation;
     private float tiempo;
@@ -40,7 +43,8 @@ public class EnemyActor extends Actor {
     private long startTimeA;
     private float timeSA, frameDuration = 1/5f, timeObj = 0.5f;
 
-    public EnemyActor(Texture texture, Vector2 position2, Vector2 size, float dy, float timeL, Vector2 posPlayer, int cimg) {
+
+    public EnemyActor(Texture texture, Vector2 position2, Vector2 size, float dy, float timeL, Vector2 posPlayer, int cimg, World world) {
 
         this.texture = texture;
         this.posInicial = new Vector2(position2.x, position2.y);
@@ -56,11 +60,14 @@ public class EnemyActor extends Actor {
         this.vHeight = Gdx.graphics.getHeight();
         startTime = System.currentTimeMillis();
 
+        this.world = world;
+
         cargarSpriteImage();
 
         this.posPlayer = posPlayer;
 
-        setSize(sWidth, sHeight);
+        setSize(sWidth, sHeight); //CREO
+
     }
 
     private void cargarSpriteImage(){

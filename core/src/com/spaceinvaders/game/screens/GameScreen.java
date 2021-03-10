@@ -12,6 +12,7 @@ import com.spaceinvaders.game.actors.EnemyActor;
 import com.spaceinvaders.game.actors.NaveActor;
 import com.spaceinvaders.game.controllers.BalaController;
 import com.spaceinvaders.game.controllers.EnemyController;
+import com.spaceinvaders.game.controllers.InputController;
 
 import static com.spaceinvaders.game.common.Constants.WIDTH;
 import static com.spaceinvaders.game.common.Constants.HEIGHT;
@@ -27,23 +28,35 @@ public class GameScreen extends BasicScreen {
 
     public World world;
 
+    public InputController processor;
+
     public GameScreen(MainGame game) {
         super(game);
         init();
     }
 
-    public void init(){
-        stage = new Stage(new StretchViewport(WIDTH,HEIGHT));
+    public void init() {
+        stage = new Stage(new StretchViewport(WIDTH, HEIGHT));
+        //stage.setDebugAll(true);
+        world = new World(new Vector2(0, -10), true);
+
+        processor = new InputController();
+        Gdx.input.setInputProcessor(processor);
+
+
+    }
+
+    @Override
+    public void show() {
+
         enemyTexture = game.getManager().get("sprite3.png");
         naveTexture = game.getManager().get("nave.png");
         balaTexture = game.getManager().get("bala.png");
 
-        naveActor = new NaveActor(naveTexture, new Vector2(WIDTH /2, 0));
-        enemies = new EnemyController(enemyTexture, naveActor.getPosition());
+        naveActor = new NaveActor(naveTexture, new Vector2(WIDTH /2, 0), world);
+        enemies = new EnemyController(enemyTexture, naveActor.getPosition(), world);
 
-        balaController = new BalaController(balaTexture, naveActor.getPosition(), naveActor.getWidth(), naveActor.getHeight(), enemies.objects);
-
-        world = new World(new Vector2(0,-10), true);
+        balaController = new BalaController(balaTexture, naveActor.getPosition(), naveActor.getWidth(), naveActor.getHeight(), enemies.objects, world, processor);
 
         stage.addActor(naveActor);
         for (EnemyActor enemy: enemies.objects)
@@ -51,16 +64,12 @@ public class GameScreen extends BasicScreen {
     }
 
     @Override
-    public void show() { }
-
-    @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.2f,0.5f,0.8f,1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         balaController.dispararBala(stage);
-
-        enemies.getDelEnemy();
+        balaController.comprobarColision();
 
         stage.act();
         world.step(delta, 6,2);
@@ -81,10 +90,10 @@ public class GameScreen extends BasicScreen {
     @Override
     public void dispose() {
         stage.dispose();
+        world.dispose();
         enemyTexture.dispose();
         naveTexture.dispose();
         balaTexture.dispose();
-        world.dispose();
     }
 }
 

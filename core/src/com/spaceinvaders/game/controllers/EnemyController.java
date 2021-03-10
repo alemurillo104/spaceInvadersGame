@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.spaceinvaders.game.actors.EnemyActor;
 import static com.spaceinvaders.game.common.Constants.HEIGHT;
 
@@ -19,6 +20,8 @@ public class EnemyController {
     private Vector2 posNave;
     private int cimg;
 
+    private World world;
+
     public EnemyController(Texture texture){
 
         objects = new LinkedList<>();
@@ -32,7 +35,7 @@ public class EnemyController {
         cargarObjetos();
     }
 
-    public EnemyController(Texture texture, Vector2 playerPosition){
+    public EnemyController(Texture texture, Vector2 playerPosition, World world){
 
         objects = new LinkedList<>();
 
@@ -43,23 +46,25 @@ public class EnemyController {
         height = HEIGHT - size.y;
         posNave = playerPosition;
 
+        this.world = world;
+
         cargarObjetos();
     }
 
     private void cargarObjetos() {
 
-        EnemyActor e0 = new EnemyActor(texture, new Vector2(10 ,height), size, 2,6, posNave, cimg);
-        EnemyActor e1 = new EnemyActor(texture, new Vector2(100,height), size, 6,4, posNave, cimg);
-        EnemyActor e2 = new EnemyActor(texture, new Vector2(200,height), size, 4,5, posNave, cimg);
-        EnemyActor e3 = new EnemyActor(texture, new Vector2(300,height), size, 5,6, posNave, cimg);
-        EnemyActor e4 = new EnemyActor(texture, new Vector2(400,height), size, 3,5, posNave, cimg);
-        EnemyActor e5 = new EnemyActor(texture, new Vector2(500,height), size, 7,7, posNave, cimg);
-        EnemyActor e6 = new EnemyActor(texture, new Vector2(580,height), size, 1,4, posNave, cimg);
+        EnemyActor e0 = new EnemyActor(texture, new Vector2(10 ,height), size, 2,6, posNave, cimg, world);
+        EnemyActor e1 = new EnemyActor(texture, new Vector2(100,height), size, 6,4, posNave, cimg, world);
+        EnemyActor e2 = new EnemyActor(texture, new Vector2(200,height), size, 4,5, posNave, cimg, world);
+        EnemyActor e3 = new EnemyActor(texture, new Vector2(300,height), size, 5,6, posNave, cimg, world);
+        EnemyActor e4 = new EnemyActor(texture, new Vector2(400,height), size, 3,5, posNave, cimg, world);
+        EnemyActor e5 = new EnemyActor(texture, new Vector2(500,height), size, 7,7, posNave, cimg, world);
+        EnemyActor e6 = new EnemyActor(texture, new Vector2(580,height), size, 1,4, posNave, cimg, world);
 
         e0.setMov(3);
         e1.setMov(2);
         e2.setMov(4);
-        e3.setMov(3); 
+        e3.setMov(3);
         e4.setMov(1);
         e5.setMov(2);
         e6.setMov(1);

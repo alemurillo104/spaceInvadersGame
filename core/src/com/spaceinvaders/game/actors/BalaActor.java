@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BalaActor extends Actor {
@@ -16,12 +18,16 @@ public class BalaActor extends Actor {
     private float timeL;
     private Vector2 movSpeed;
     private boolean isAlive;
-    private float vWidth, vHeight;
+    private float vWidth;
+
+    private float vHeight;
 
     private long startTime;
     private float timeS;
 
 //    private Vector2  posInicial, posPlayer;
+
+    private World world;
 
     public BalaActor(Texture texture, Vector2 position, Vector2 size,float dy, float timeL) {
         this.texture = texture;
@@ -37,10 +43,10 @@ public class BalaActor extends Actor {
         this.vHeight = Gdx.graphics.getHeight();
 
         startTime = System.currentTimeMillis();
-        setSize(sWidth, sHeight);
+        setSize(sWidth , sHeight);
     }
 
-    public BalaActor(Texture texture, Vector2 position, float dy, float timeL) {
+    public BalaActor(Texture texture, Vector2 position, float dy, float timeL, World world) {
 
         this.texture = texture;
         this.position = position;
@@ -83,6 +89,14 @@ public class BalaActor extends Actor {
             if (time >= timeL)  //se cumplio
                 timeL = timeL + time;
         }
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     private void MoverY(boolean sw) {

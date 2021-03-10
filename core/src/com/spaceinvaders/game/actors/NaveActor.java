@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import static com.spaceinvaders.game.common.Constants.WIDTH;
@@ -26,8 +27,9 @@ public class NaveActor extends Actor {
     private boolean izquierda = false, derecha = true;
     private float valor = 3f;
 
+    private World world;
 
-    public NaveActor(Texture texture, Vector2 position) {
+    public NaveActor(Texture texture, Vector2 position, World world) {
         this.texture = texture;
         this.position = position;
         this.sWidth = 50;
@@ -37,7 +39,9 @@ public class NaveActor extends Actor {
         this.movementSpeed =  new Vector2( dx / timeL, dy/ timeL);
         this.isAlive = true;
 
-        setSize(sWidth,sHeight);
+        this.world = world;
+
+        setSize(sWidth, sHeight);
     }
 
     public Vector2 getPosition() { return position; }
@@ -57,7 +61,7 @@ public class NaveActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        setPosition(position.x,position.y);
+        setPosition(position.x , position.y);
         batch.draw(texture,position.x,position.y, sWidth, sHeight);
     }
 
@@ -101,5 +105,6 @@ public class NaveActor extends Actor {
 
     public void detach(){
         texture.dispose();
+
     }
 }
