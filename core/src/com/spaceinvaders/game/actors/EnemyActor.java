@@ -100,7 +100,7 @@ public class EnemyActor extends Actor {
         tiempo += delta;
 
         if (start){
-            startAnimation();
+            startAnimationTime();
             frameActual = (TextureRegion) animation.getKeyFrame(tiempo, true);
         }
 
@@ -108,7 +108,7 @@ public class EnemyActor extends Actor {
         executeMovement(timeS);
     }
 
-    private void startAnimation() {
+    private void startAnimationTime() {
         iniciarTiempo();
         timeSA = (System.currentTimeMillis() - startTimeA) /1000;
 
