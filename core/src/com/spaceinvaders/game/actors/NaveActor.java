@@ -26,6 +26,7 @@ public class NaveActor extends Actor {
     private boolean izquierda = false, derecha = true;
     private float valor = 3f;
 
+    private int lives;
 
     public NaveActor(Texture texture, Vector2 position) {
         this.texture = texture;
@@ -36,6 +37,8 @@ public class NaveActor extends Actor {
         this.timeL = 3;
         this.movementSpeed =  new Vector2( dx / timeL, dy/ timeL);
         this.isAlive = true;
+
+        this.lives = 10;
 
         setSize(sWidth, sHeight);
     }
@@ -49,6 +52,8 @@ public class NaveActor extends Actor {
         this.timeL = timeL;
         this.movementSpeed = new Vector2(dx / timeL, dy / timeL);
         this.isAlive = true;
+
+        this.lives = 3;
 
         setSize(sWidth,sHeight);
     }
@@ -92,6 +97,44 @@ public class NaveActor extends Actor {
         position.x += val;
     }
 
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public void decreaseLives() {
+        if (isAlive) {
+            if (this.lives > 0) {
+                this.lives--;
+            } else {
+                isAlive = false;
+            }
+        }
+    }
+
+    public int decreaseLives2() {
+        if (isAlive) {
+            if (lives > 0) {
+                lives = lives - 1;
+            }
+//            } else {
+//                isAlive = false;
+//            }
+        }
+        return lives;
+    }
 
     public void detach(){
         texture.dispose();

@@ -24,6 +24,7 @@ public class BalaActor extends Actor {
     private long startTime;
     private float timeS;
 
+    private boolean direccion;
 
     public BalaActor(Texture texture, Vector2 position, Vector2 size,float dy, float timeL) {
         this.texture = texture;
@@ -42,7 +43,7 @@ public class BalaActor extends Actor {
         setSize(sWidth , sHeight);
     }
 
-    public BalaActor(Texture texture, Vector2 position, float dy, float timeL) {
+    public BalaActor(Texture texture, Vector2 position, float dy, float timeL, boolean dir) {
 
         this.texture = texture;
         this.position = position;
@@ -54,6 +55,8 @@ public class BalaActor extends Actor {
 
         this.vWidth = Gdx.graphics.getWidth();
         this.vHeight = Gdx.graphics.getHeight();
+
+        this.direccion = dir;
 
         startTime = System.currentTimeMillis();
         setSize(sWidth, sHeight);
@@ -76,10 +79,16 @@ public class BalaActor extends Actor {
 
     public void executeMovement(float time){
         if (isAlive){
-            MoverY(true);
+            MoverY(direccion);
 
-            if (position.y > vHeight){
-                isAlive = false;
+            if (direccion){
+                if (position.y > vHeight){
+                    isAlive = false;
+                }
+            }else{
+                if (position.y < 0) {
+                    isAlive = false;
+                }
             }
 
             if (time >= timeL)  //se cumplio

@@ -23,7 +23,8 @@ public class MainGame extends Game {
 		assetManager.load("enemy.png", Texture.class);
 		assetManager.load("enemyS4.png", Texture.class);
 		assetManager.load("sprite3.png", Texture.class);
-		assetManager.load("bala.png", Texture.class);
+		assetManager.load("balaPlayer.png", Texture.class);
+		assetManager.load("balaEnemy.png", Texture.class);
 		assetManager.finishLoading();
 
 		gameScreen = new GameScreen(this);

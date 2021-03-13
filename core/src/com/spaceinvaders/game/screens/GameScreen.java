@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.spaceinvaders.game.MainGame;
 import com.spaceinvaders.game.actors.EnemyActor;
+import com.spaceinvaders.game.actors.ScoreLActor;
 import com.spaceinvaders.game.actors.NaveActor;
 import com.spaceinvaders.game.controllers.BalaController;
 import com.spaceinvaders.game.controllers.EnemyController;
@@ -19,13 +20,16 @@ import static com.spaceinvaders.game.common.Constants.HEIGHT;
 public class GameScreen extends BasicScreen {
 
     public Stage stage;
-    public Texture enemyTexture, naveTexture, balaTexture;
+    public Texture enemyTexture, naveTexture, balaPlayerTexture, balaEnemyTexture;
     public EnemyController enemies;
     public NaveActor naveActor;
 
     public BalaController balaController;
 
     public InputController inputController;
+
+    public int score = 0;
+    public ScoreLActor scoreLActor;
 
     public GameScreen(MainGame game) {
         super(game);
@@ -41,16 +45,22 @@ public class GameScreen extends BasicScreen {
 
         enemyTexture = game.getManager().get("sprite3.png");
         naveTexture = game.getManager().get("nave.png");
-        balaTexture = game.getManager().get("bala.png");
+        balaPlayerTexture = game.getManager().get("balaPlayer.png");
+        balaEnemyTexture = game.getManager().get("balaEnemy.png");
 
         naveActor = new NaveActor(naveTexture, new Vector2(WIDTH /2, 0));
         enemies = new EnemyController(enemyTexture, naveActor.getPosition());
 
-        balaController = new BalaController(balaTexture, naveActor.getPosition(), naveActor.getWidth(), naveActor.getHeight(), enemies.objects, inputController);
+        scoreLActor = new ScoreLActor(naveActor, score);
+
+        balaController = new BalaController(balaPlayerTexture, balaEnemyTexture, naveActor.getPosition(), naveActor.getWidth(), naveActor.getHeight(), enemies.objects, inputController, score, scoreLActor);
+
+        stage.addActor(scoreLActor);
 
         stage.addActor(naveActor);
         for (EnemyActor enemy: enemies.objects)
             stage.addActor(enemy);
+
     }
 
     @Override
@@ -61,8 +71,15 @@ public class GameScreen extends BasicScreen {
         Gdx.gl.glClearColor(0.2f,0.5f,0.8f,1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        //hud rendering
+        //updateAndRenderHUD();
+
+        balaController.shootBalaEnemy(stage);
         balaController.shoot(stage);
         balaController.comprobarColision();
+        balaController.comprobarColision2Player();
+        //balaController.comprobarColisionToPlayer();
 
         stage.act();
         stage.draw();
@@ -76,6 +93,7 @@ public class GameScreen extends BasicScreen {
             enemy.remove();
 
         naveActor.remove();
+        scoreLActor.remove();
     }
 
     @Override
@@ -83,7 +101,8 @@ public class GameScreen extends BasicScreen {
         stage.dispose();
         enemyTexture.dispose();
         naveTexture.dispose();
-        balaTexture.dispose();
+        balaPlayerTexture.dispose();
+        balaEnemyTexture.dispose();
     }
 }
 

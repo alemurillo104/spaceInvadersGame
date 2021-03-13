@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.spaceinvaders.game.actors.BalaActor;
 import com.spaceinvaders.game.actors.EnemyActor;
 import static com.spaceinvaders.game.common.Constants.HEIGHT;
 
@@ -13,15 +15,19 @@ import java.util.Random;
 public class EnemyController {
 
     public LinkedList<EnemyActor> objects;
+    public LinkedList<BalaActor> balasEnemy;
     private Texture texture;
     private float height;
     private Vector2 size;
     private Vector2 posNave;
     private int cimg;
 
+    private float dy, timeL;
+
     public EnemyController(Texture texture){
 
         objects = new LinkedList<>();
+        balasEnemy = new LinkedList<>();
 
         this.texture = texture;
         this.size = new Vector2(70,50);
@@ -42,6 +48,9 @@ public class EnemyController {
 
         height = HEIGHT - size.y;
         posNave = playerPosition;
+
+        this.dy = 5;
+        this.timeL = 2;
 
         cargarObjetos();
     }
@@ -97,7 +106,7 @@ public class EnemyController {
 
     }
 
-    public void getDelEnemy(){
+    public void getDelEnemy(Stage stage){
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
 
@@ -106,11 +115,32 @@ public class EnemyController {
                 EnemyActor em = objects.get(i);
 
                 if (em != null){
-                    em.setStart(true);
-                    objects.remove(i);
+
+
+                    Vector2 middle = new Vector2( em.getX() + (em.getWidth() /2), em.getY() + em.getHeight());
+                    BalaActor balaActor = new BalaActor(texture, middle, dy, timeL, false);
+                    balasEnemy.add(balaActor);
+                    stage.addActor(balaActor);
+
+                    System.out.println("enemy shoot");
+                    //em.setStart(true);
+                    //objects.remove(i);
                 }
             }
         }
 
+    }
+
+    public boolean comprobarColision2Player(){
+        int i = 0;
+        while(i < balasEnemy.size()) {
+            BalaActor bala = balasEnemy.get(i);
+//            if ( (bala.getX() > e.getX() && bala.getX() <= (e.getX() + e.getWidth())  ) &&
+//                    (bala.getY() > e.getY() && bala.getY() <= (e.getY() + e.getHeight()) )   ){
+//
+//            }
+        }
+
+        return false;
     }
 }
