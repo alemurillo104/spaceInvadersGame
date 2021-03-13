@@ -1,16 +1,12 @@
 package com.spaceinvaders.game.controllers;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.spaceinvaders.game.actors.BalaActor;
 import com.spaceinvaders.game.actors.EnemyActor;
 import static com.spaceinvaders.game.common.Constants.HEIGHT;
 
 import java.util.LinkedList;
-import java.util.Random;
 
 public class EnemyController {
 
@@ -106,41 +102,4 @@ public class EnemyController {
 
     }
 
-    public void getDelEnemy(Stage stage){
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-
-            if (objects.size() > 0){
-                int i = new Random().nextInt(objects.size());
-                EnemyActor em = objects.get(i);
-
-                if (em != null){
-
-
-                    Vector2 middle = new Vector2( em.getX() + (em.getWidth() /2), em.getY() + em.getHeight());
-                    BalaActor balaActor = new BalaActor(texture, middle, dy, timeL, false);
-                    balasEnemy.add(balaActor);
-                    stage.addActor(balaActor);
-
-                    System.out.println("enemy shoot");
-                    //em.setStart(true);
-                    //objects.remove(i);
-                }
-            }
-        }
-
-    }
-
-    public boolean comprobarColision2Player(){
-        int i = 0;
-        while(i < balasEnemy.size()) {
-            BalaActor bala = balasEnemy.get(i);
-//            if ( (bala.getX() > e.getX() && bala.getX() <= (e.getX() + e.getWidth())  ) &&
-//                    (bala.getY() > e.getY() && bala.getY() <= (e.getY() + e.getHeight()) )   ){
-//
-//            }
-        }
-
-        return false;
-    }
 }

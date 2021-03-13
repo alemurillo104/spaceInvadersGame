@@ -19,7 +19,7 @@ public class ScoreLActor extends Actor {
     private BitmapFont font;
     private float hudVerticalMargin, hudLeftX, hudRightX, hudCentreX, hudRow1Y, hudRow2Y, hudSectionWidth ;
 
-    private NaveActor player;
+    private PlayerShipActor player;
     private int score, playerLives;
 
     private Color fontColor, borderColor;
@@ -28,7 +28,7 @@ public class ScoreLActor extends Actor {
 
     private boolean detectedCollision, detectedCollisionPlayer;
 
-    public ScoreLActor(NaveActor player, int score){
+    public ScoreLActor(PlayerShipActor player, int score){
 
         this.player = player;
         this.score = score;

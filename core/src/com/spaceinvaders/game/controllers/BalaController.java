@@ -1,7 +1,5 @@
 package com.spaceinvaders.game.controllers;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,11 +23,10 @@ public class BalaController {
 
     private InputController inputController;
 
-    private boolean start = false, iniciar = true;
-    private long startTimeA;
-    private float timeSA, timeLimite;
+    private boolean iniciar = true, iniciarSE = true;
+    private long startTimeA, startTimeE;
+    private float timeSA, timeLimite, timeSE, timeLimiteSE;
 
-    private int score;
     private ScoreLActor scoreLActor;
 
     public BalaController(Texture texture, Texture etexture, Vector2 playerPos, float sWidth, float sHeight, LinkedList<EnemyActor> enemies, InputController inputCont, int score, ScoreLActor scoreLActor){
@@ -45,7 +42,6 @@ public class BalaController {
         this.inputController = inputCont;
         this.timeLimite = 1;
 
-        this.score = score;
         this.scoreLActor = scoreLActor;
 
         this.etexture = etexture;
@@ -66,7 +62,7 @@ public class BalaController {
     }
 
 
-    //Control de tiempo entre balas
+    //-----------------Control de tiempo entre balas Player-----------------
 
     private void startShootingTime(Stage stage) {
         iniciarTiempo(stage);
@@ -98,17 +94,6 @@ public class BalaController {
 
     }
 
-    public void dispararBala(Stage stage){
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)){
-            Vector2 middle = new Vector2( playerPos.x + (sWidth /2), playerPos.y + sHeight);
-            BalaActor balaActor = new BalaActor(texture, middle, dy, timeL, true);
-            balas.add(balaActor);
-            stage.addActor(balaActor);
-        }
-
-    }
-
     public boolean comprobarColision(){
         int i = 0;
         while(i < balas.size()){
@@ -121,7 +106,6 @@ public class BalaController {
 
                     System.out.println("hubo colision");
 
-                    //score += 100;
                     scoreLActor.setDetectedCollision(true);
 
                     e.setStart(true);
@@ -139,63 +123,56 @@ public class BalaController {
     }
 
 
-    public boolean comprobarColisionToPlayer() {
 
-        int i = 0;
-        while ( i < enemies.size()) {
-            EnemyActor e = enemies.get(i);
-            //tener cuidado que, como sigue invadiendo las vidas se siguen reduciendo ps :(, o hacer que solo lo toque en la esquina superior
-            //NO esta siendo eficiente si, F
-            if ((e.getX() > playerPos.x && e.getX() <= (playerPos.x + sWidth)) &&
-                    (e.getY() > playerPos.y && e.getY() <= (playerPos.y + 10))) { // o sea un poquito mas, sHeight
+    //-------------Control de tiempo entre balas Enemy----------------
 
-                System.out.println("hubo colision enemy - player");
-                //reduzco las vidas
+    public void shootBalaEnemyT(Stage stage) {
+        iniciarTiempoSE(stage);
+        timeSE = (System.currentTimeMillis() - startTimeE) /1000;
 
-                scoreLActor.setDetectedCollisionPlayer(true);
-                return true;
-            }
-            i++;
+        if (timeSE >= timeLimiteSE) {
+
+            System.out.println("DO SOME STUFF SE: "+ timeLimiteSE);
+            shootBalaEnemy(stage);
+            timeLimiteSE = timeLimiteSE + 1;
         }
-        return false;
     }
 
+    private void iniciarTiempoSE(Stage stage) {
+        if (iniciarSE){
+            startTimeE = System.currentTimeMillis();
+            shootBalaEnemy(stage);
+            iniciarSE = false;
+        }
+    }
+
+    private void shootBalaEnemy(Stage stage){
+
+        if (enemies.size() > 0){
+            int i = new Random().nextInt(enemies.size());
+            EnemyActor em = enemies.get(i);
+
+            if (em != null){
+
+                //disparo la bala
+                Vector2 middle = new Vector2( em.getX() + (em.getWidth() /2), em.getY() - em.getHeight());
+                BalaActor balaActor = new BalaActor(etexture, middle, dy, timeL, false);
+                balasEnemy.add(balaActor);
+                stage.addActor(balaActor);
+
+                System.out.println("enemy shoot");
+            }
+        }
+    }
 
     //Collision para el player desde el enemigo
 
-
-    public void shootBalaEnemy(Stage stage){
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-
-            if (enemies.size() > 0){
-                int i = new Random().nextInt(enemies.size());
-                EnemyActor em = enemies.get(i);
-
-                if (em != null){
-
-                    //disparo la bala
-                    Vector2 middle = new Vector2( em.getX() + (em.getWidth() /2), em.getY() - em.getHeight());
-                    BalaActor balaActor = new BalaActor(etexture, middle, dy, timeL, false);
-                    balasEnemy.add(balaActor);
-                    stage.addActor(balaActor);
-
-                    System.out.println("enemy shoot");
-                    //em.setStart(true);
-                    //objects.remove(i);
-                }
-            }
-        }
-
-    }
-
-    public boolean comprobarColision2Player(){
+    public boolean comprobarColisionToPlayer(){
         int i = 0;
         while(i < balasEnemy.size()) {
             BalaActor bala = balasEnemy.get(i);
             if ( (bala.getX() > playerPos.x && bala.getX() <= (playerPos.x + sWidth) ) &&
                  (bala.getY() > playerPos.y && bala.getY() <= (playerPos.y + sHeight)) ){
-                //(bala.getY() < playerPos.y && bala.getY() >= (playerPos.y + sHeight)) ){
 
                 System.out.println("colision del player y la bala del enemy");
 
@@ -204,7 +181,6 @@ public class BalaController {
                 bala.setAlive(false);
                 balasEnemy.remove(i);
                 return true;
-
             }
             i++;
         }

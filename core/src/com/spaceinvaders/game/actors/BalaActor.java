@@ -86,7 +86,7 @@ public class BalaActor extends Actor {
                     isAlive = false;
                 }
             }else{
-                if (position.y < 0) {
+                if (position.y < 5) {
                     isAlive = false;
                 }
             }

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import static com.spaceinvaders.game.common.Constants.WIDTH;
 
-public class NaveActor extends Actor {
+public class PlayerShipActor extends Actor {
 
     private Texture texture;
     private Vector2 position;
@@ -28,7 +28,7 @@ public class NaveActor extends Actor {
 
     private int lives;
 
-    public NaveActor(Texture texture, Vector2 position) {
+    public PlayerShipActor(Texture texture, Vector2 position) {
         this.texture = texture;
         this.position = position;
         this.sWidth = 50;
@@ -38,12 +38,12 @@ public class NaveActor extends Actor {
         this.movementSpeed =  new Vector2( dx / timeL, dy/ timeL);
         this.isAlive = true;
 
-        this.lives = 10;
+        this.lives = 3;
 
         setSize(sWidth, sHeight);
     }
 
-    public NaveActor(Texture texture, Vector2 position, float sWidth, float sHeight, float dx, float timeL) {
+    public PlayerShipActor(Texture texture, Vector2 position, float sWidth, float sHeight, float dx, float timeL) {
         this.texture = texture;
         this.position = position;
         this.sWidth = sWidth;
