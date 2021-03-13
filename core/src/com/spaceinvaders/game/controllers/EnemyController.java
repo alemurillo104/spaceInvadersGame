@@ -56,6 +56,14 @@ public class EnemyController {
         EnemyActor e5 = new EnemyActor(texture, new Vector2(500,height), size, 7,7, posNave, cimg);
         EnemyActor e6 = new EnemyActor(texture, new Vector2(580,height), size, 1,4, posNave, cimg);
 
+        EnemyActor e7  = new EnemyActor(texture, new Vector2(10 ,height - size.y - 10), size, 2,6, posNave, cimg);
+        EnemyActor e8  = new EnemyActor(texture, new Vector2(100,height - size.y - 10), size, 6,4, posNave, cimg);
+        EnemyActor e9  = new EnemyActor(texture, new Vector2(200,height - size.y - 10), size, 4,5, posNave, cimg);
+        EnemyActor e10 = new EnemyActor(texture, new Vector2(300,height - size.y - 10), size, 5,6, posNave, cimg);
+        EnemyActor e11 = new EnemyActor(texture, new Vector2(400,height - size.y - 10), size, 3,5, posNave, cimg);
+        EnemyActor e12 = new EnemyActor(texture, new Vector2(500,height - size.y - 10), size, 7,7, posNave, cimg);
+        EnemyActor e13 = new EnemyActor(texture, new Vector2(580,height - size.y - 10), size, 1,4, posNave, cimg);
+
         e0.setMov(3);
         e1.setMov(2);
         e2.setMov(4);
@@ -64,6 +72,14 @@ public class EnemyController {
         e5.setMov(2);
         e6.setMov(1);
 
+        e7.setMov(1);
+        e8.setMov(1);
+        e9.setMov(1);
+        e10.setMov(1);
+        e11.setMov(1);
+        e12.setMov(1);
+        e13.setMov(2);
+
         objects.add(e0);
         objects.add(e1);
         objects.add(e2);
@@ -71,6 +87,13 @@ public class EnemyController {
         objects.add(e4);
         objects.add(e5);
         objects.add(e6);
+        objects.add(e7);
+        objects.add(e8);
+        objects.add(e9);
+        objects.add(e10);
+        objects.add(e11);
+        objects.add(e12);
+        objects.add(e13);
 
     }
 

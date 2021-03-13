@@ -128,6 +128,9 @@ public class EnemyActor extends Actor {
         if (isAlive){
             ejecutarMovement(mov);
 
+            if(position.y < 0)
+                setAlive(false);
+
             if (time >= timeL)  //se cumplio
                 timeL = timeL + time;
         }

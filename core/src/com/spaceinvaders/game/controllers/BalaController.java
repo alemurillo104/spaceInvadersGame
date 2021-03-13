@@ -48,7 +48,7 @@ public class BalaController {
             startShootingTime(stage);
 
         }else{
-            System.out.println("la solté");
+            System.out.println("la solte");
             iniciar = true;
             timeLimite = 1;
         }
@@ -110,14 +110,11 @@ public class BalaController {
 
                     System.out.println("hubo colision");
 
-                    if (e != null){
-                        e.setStart(true);
-                        enemies.remove(j);
-                    }
-                    if (bala != null){
-                        bala.setAlive(false);
-                        balas.remove(i);
-                    }
+                    e.setStart(true);
+                    enemies.remove(j);
+
+                    bala.setAlive(false);
+                    balas.remove(i);
                     return true;
                 }
                 j++;
