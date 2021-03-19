@@ -42,7 +42,8 @@ public class MainGame extends Game {
 		gameScreen = new GameScreen(this);
 		gameOverScreen = new GameOverScreen(this);
 
-		setScreen(gameScreen);
+		//setScreen(gameScreen);
+		setScreen(gameOverScreen);
 	}
 }
 

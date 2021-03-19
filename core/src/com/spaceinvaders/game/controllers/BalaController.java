@@ -167,7 +167,7 @@ public class BalaController {
 
     //Collision para el player desde el enemigo
 
-    public boolean comprobarColisionToPlayer(){
+    public boolean comprobarColisionToPlayer(){ //esta mal parece, hacer bien el calculo wey
         int i = 0;
         while(i < balasEnemy.size()) {
             BalaActor bala = balasEnemy.get(i);

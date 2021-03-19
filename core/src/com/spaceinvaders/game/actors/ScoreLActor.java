@@ -27,8 +27,9 @@ public class ScoreLActor extends Actor {
     private float borderWidth, fontScale;
 
     private boolean detectedCollision, detectedCollisionPlayer;
+    private int nivel;
 
-    public ScoreLActor(PlayerShipActor player, int score){
+    public ScoreLActor(PlayerShipActor player, int score, int nivel){
 
         this.player = player;
         this.score = score;
@@ -42,6 +43,8 @@ public class ScoreLActor extends Actor {
         this.fontScale = 0.8f; //0.08f
         this.fontColor = new Color(1,1,1,0.3f);
         this.borderColor = new Color(0,0,0,0.3f);
+
+        this.nivel = nivel;
         //Create a BitmapFont from out font file
 
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font.otf"));
@@ -72,13 +75,13 @@ public class ScoreLActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
 
         font.draw(batch, "Score", hudLeftX, hudRow1Y, hudSectionWidth, Align.left, false);
-        //font.draw(batch, "Shield", hudCentreX, hudRow1Y, hudSectionWidth, Align.center, false);
+        font.draw(batch, "Level", hudCentreX, hudRow1Y, hudSectionWidth, Align.center, false);
         font.draw(batch, "Lives", hudRightX, hudRow1Y, hudSectionWidth, Align.right, false);
 
         //render the second row values
 
         font.draw(batch, String.format(Locale.getDefault(), "%06d", score), hudLeftX, hudRow2Y, hudSectionWidth, Align.left, false);
-        //font.draw(batch, String.format(Locale.getDefault(), "%02d", player.getLives()),  hudCentreX, hudRow2Y, hudSectionWidth, Align.center, false);
+        font.draw(batch, String.format(Locale.getDefault(), "%02d", nivel),  hudCentreX, hudRow2Y, hudSectionWidth, Align.center, false);
         font.draw(batch, String.format(Locale.getDefault(), "%02d", playerLives), hudRightX, hudRow2Y, hudSectionWidth, Align.right, false);
 
     }

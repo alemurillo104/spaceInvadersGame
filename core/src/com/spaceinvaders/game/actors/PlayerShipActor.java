@@ -38,7 +38,7 @@ public class PlayerShipActor extends Actor {
         this.movementSpeed =  new Vector2( dx / timeL, dy/ timeL);
         this.isAlive = true;
 
-        this.lives = 3;
+        this.lives = 50;
 
         setSize(sWidth, sHeight);
     }
@@ -53,7 +53,7 @@ public class PlayerShipActor extends Actor {
         this.movementSpeed = new Vector2(dx / timeL, dy / timeL);
         this.isAlive = true;
 
-        this.lives = 3;
+        this.lives = 50;
 
         setSize(sWidth,sHeight);
     }

@@ -32,12 +32,18 @@ public class GameScreen extends BasicScreen {
     public int score = 0;
     public ScoreLActor scoreLActor;
 
+    public int nivel;
+    public boolean subiNivel;
+
     public GameScreen(MainGame game) {
         super(game);
         init();
     }
 
     public void init() {
+        nivel = 1;
+        subiNivel = false;
+
         stage = new Stage(new StretchViewport(WIDTH, HEIGHT));
         //stage.setDebugAll(true);
 
@@ -49,10 +55,29 @@ public class GameScreen extends BasicScreen {
         balaPlayerTexture = game.getManager().get("balaPlayer.png");
         balaEnemyTexture = game.getManager().get("balaEnemy.png");
 
-        playerShipActor = new PlayerShipActor(playerShipTexture, new Vector2(WIDTH /2, 0));
-        enemies = new EnemyController(enemyTexture, playerShipActor.getPosition());
+//        playerShipActor = new PlayerShipActor(playerShipTexture, new Vector2(WIDTH /2, 0));
+//        enemies = new EnemyController(enemyTexture, playerShipActor.getPosition());
+//
+//        scoreLActor = new ScoreLActor(playerShipActor, score);
+//
+//        balaController = new BalaController(balaPlayerTexture, balaEnemyTexture, playerShipActor.getPosition(), playerShipActor.getWidth(), playerShipActor.getHeight(), enemies.objects, inputController, score, scoreLActor);
 
-        scoreLActor = new ScoreLActor(playerShipActor, score);
+        cargarEntitiesInit();
+
+//        stage.addActor(scoreLActor);
+//
+//        stage.addActor(playerShipActor);
+//        for (EnemyActor enemy: enemies.objects)
+//            stage.addActor(enemy);
+
+    }
+
+    private void cargarEntitiesInit(){
+        playerShipActor = new PlayerShipActor(playerShipTexture, new Vector2(WIDTH /2, 0));
+
+        enemies = new EnemyController(enemyTexture, playerShipActor.getPosition(), nivel);
+
+        scoreLActor = new ScoreLActor(playerShipActor, score, nivel);
 
         balaController = new BalaController(balaPlayerTexture, balaEnemyTexture, playerShipActor.getPosition(), playerShipActor.getWidth(), playerShipActor.getHeight(), enemies.objects, inputController, score, scoreLActor);
 
@@ -65,7 +90,9 @@ public class GameScreen extends BasicScreen {
     }
 
     @Override
-    public void show() { }
+    public void show() {
+        Gdx.input.setInputProcessor(inputController); //creo
+    }
 
     @Override
     public void render(float delta) {
@@ -78,6 +105,7 @@ public class GameScreen extends BasicScreen {
 
         if (playerShipActor.getLives() == 0){
             System.out.println("==========GAME OVER===========");
+
             stage.addAction(Actions.sequence(
                     Actions.delay(0.5f),
                     Actions.run(new Runnable() {
@@ -89,6 +117,40 @@ public class GameScreen extends BasicScreen {
             ));
         }
 
+        //sube de nivel
+        if (enemies.objects.size() == 0){
+            if (!subiNivel){
+                subiNivel = true;
+                nivel = nivel + 1;
+                //reinicio el juego con mas velocidad
+
+                //limpio de pantalla
+                stage.clear();
+                playerShipActor.remove();
+
+                cargarEntitiesInit();
+
+            }else{
+                if (nivel == 2){ //si sera nivel 2
+                    System.out.println("Juego terminado! Felicidades es el ganador! ");
+                    stage.addAction(Actions.sequence(
+                            Actions.delay(0.5f),
+                            Actions.run(new Runnable() {
+                                @Override
+                                public void run() {
+                                    game.setScreen(game.gameOverScreen);
+                                }
+                            })
+                    ));
+//                    try {
+//                        Thread.sleep(10000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+            }
+        }
+
         balaController.shoot(stage);
         balaController.shootBalaEnemyT(stage);
         balaController.comprobarColision();
@@ -98,8 +160,10 @@ public class GameScreen extends BasicScreen {
         stage.draw();
     }
 
+
     @Override
     public void hide() {
+        Gdx.input.setInputProcessor(null);//CREO
         stage.clear();
 
         for (EnemyActor enemy: enemies.objects)
@@ -119,3 +183,22 @@ public class GameScreen extends BasicScreen {
     }
 }
 
+/*
+*
+        if (enemies.objects.size() == 0 && !subiNivel){ //ya no hay enemigos, todo se reinicia pero en nivel 2, omg, como hago eso wey
+
+            //subi nivel
+            subiNivel = true;
+            //nivel aumenta
+
+            nivel = nivel + 1;
+            //la velocidad aumenta
+
+            //puedo llamar al init y tener una bandera para que solo lo haga una vez, pero cuando sea 2do nivel, 2 veces por asi decirlo
+            //el juego termine, y el mensaje sera, GANASTE O ALGO ASI no?
+
+            if (nivel == 2){
+                System.out.println("Juego terminado! Felicidades es el ganador! ñe");
+            }
+        }
+*/

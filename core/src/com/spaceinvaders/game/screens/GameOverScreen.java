@@ -1,5 +1,7 @@
 package com.spaceinvaders.game.screens;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.spaceinvaders.game.MainGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,23 +14,40 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import static com.spaceinvaders.game.common.Constants.HEIGHT;
+import static com.spaceinvaders.game.common.Constants.WIDTH;
+
 public class GameOverScreen extends BasicScreen{
 
     private Stage stage;
+    private Viewport vp;
     private Skin skin;
     private Image gameover;
     private TextButton retry, menu;
+    private float dx;
+    private Vector2 size, retryButtonPos;
 
     public GameOverScreen(final MainGame game) {
         super(game);
+        this.dx = 320;
+        this.size = new Vector2(200,80);
 
-        stage = new Stage(new FitViewport(640,360));
+        //this.retryButtonPos = new Vector2(WIDTH / 2 - retry.getWidth(),60);
+        //this.retryButtonPos = new Vector2(60,60);
+
+        init();
+    }
+
+    public void init(){
+        vp = new FitViewport(WIDTH, HEIGHT);
+        stage = new Stage(vp);
+
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         Texture texture = game.getManager().get("gameover.png");
-        //gameover = new Image(game.getManager().get("gameover.png", Texture.class));
         gameover = new Image(texture);
         retry = new TextButton("Retry", skin);
-        menu = new TextButton("Menu", skin);
+
+        this.retryButtonPos = new Vector2((WIDTH / 2) - (size.x / 2),60);
 
         retry.addCaptureListener(new ChangeListener() {
             @Override
@@ -40,30 +59,22 @@ public class GameOverScreen extends BasicScreen{
             }
         });
 
-        menu.addCaptureListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                //game.setScreen(game.gameScreen); //idk
-                System.out.println("Aun nada ñe");
-            }
-        });
+        //gameover.setPosition(gameover.getWidth() / 6 , gameover.getHeight() * 4);
+        gameover.setPosition(dx - gameover.getWidth() / 2 , dx - gameover.getHeight() );
 
-        gameover.setPosition(320 - gameover.getWidth() / 2, 320 - gameover.getHeight());
+        retry.setSize(size.x, size.y);
 
-        retry.setSize(200,80);
-        menu.setSize(200,80);
-
-        retry.setPosition(60,50);
-        menu.setPosition(380,50);
+        retry.setPosition(retryButtonPos.x, retryButtonPos.y);
 
         stage.addActor(retry);
-        stage.addActor(menu);
         stage.addActor(gameover);
+
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage); //Procesa eventos de todas las entradas
+        Gdx.input.setInputProcessor(stage);
+        //Gdx.input.setInputProcessor(stage); //Procesa eventos de todas las entradas
     }
 
     @Override
