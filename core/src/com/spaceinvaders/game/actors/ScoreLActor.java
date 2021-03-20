@@ -15,9 +15,8 @@ import static com.spaceinvaders.game.common.Constants.WIDTH;
 
 public class ScoreLActor extends Actor {
 
-    //Heads-Up Display, must be a class i think
     private BitmapFont font;
-    private float hudVerticalMargin, hudLeftX, hudRightX, hudCentreX, hudRow1Y, hudRow2Y, hudSectionWidth ;
+    private float posVerticalMargin, posLeftX, posRightX, posCentreX, posRow1Y, posRow2Y, posSectionWidth ;
 
     private PlayerShipActor player;
     private int score, playerLives;
@@ -45,7 +44,7 @@ public class ScoreLActor extends Actor {
         this.borderColor = new Color(0,0,0,0.3f);
 
         this.nivel = nivel;
-        //Create a BitmapFont from out font file
+        //Crear BitmapFont del archivo font
 
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -57,32 +56,30 @@ public class ScoreLActor extends Actor {
 
         font = fontGenerator.generateFont(fontParameter);
 
-        //scale the font to fit the world
+        font.getData().setScale(fontScale); //scale
 
-        font.getData().setScale(fontScale);
-
-        //calculate hud margins, etc.
-        hudVerticalMargin = font.getCapHeight() / 2;
-        hudLeftX = hudVerticalMargin;
-        hudRightX = (WIDTH) * 2 / 3 - hudLeftX;
-        hudCentreX = (WIDTH) / 3;
-        hudRow1Y =  (HEIGHT) - hudVerticalMargin ;
-        hudRow2Y =  hudRow1Y - hudVerticalMargin - font.getCapHeight();
-        hudSectionWidth = (WIDTH) / 3 ;
+        //calcular margenes
+        posVerticalMargin = font.getCapHeight() / 2;
+        posLeftX = posVerticalMargin;
+        posRightX = (WIDTH) * 2 / 3 - posLeftX;
+        posCentreX = (WIDTH) / 3;
+        posRow1Y =  (HEIGHT) - posVerticalMargin ;
+        posRow2Y =  posRow1Y - posVerticalMargin - font.getCapHeight();
+        posSectionWidth = (WIDTH) / 3 ;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-        font.draw(batch, "Score", hudLeftX, hudRow1Y, hudSectionWidth, Align.left, false);
-        font.draw(batch, "Level", hudCentreX, hudRow1Y, hudSectionWidth, Align.center, false);
-        font.draw(batch, "Lives", hudRightX, hudRow1Y, hudSectionWidth, Align.right, false);
+        font.draw(batch, "Score", posLeftX, posRow1Y, posSectionWidth, Align.left, false);
+        font.draw(batch, "Level", posCentreX, posRow1Y, posSectionWidth, Align.center, false);
+        font.draw(batch, "Lives", posRightX, posRow1Y, posSectionWidth, Align.right, false);
 
         //render the second row values
 
-        font.draw(batch, String.format(Locale.getDefault(), "%06d", score), hudLeftX, hudRow2Y, hudSectionWidth, Align.left, false);
-        font.draw(batch, String.format(Locale.getDefault(), "%02d", nivel),  hudCentreX, hudRow2Y, hudSectionWidth, Align.center, false);
-        font.draw(batch, String.format(Locale.getDefault(), "%02d", playerLives), hudRightX, hudRow2Y, hudSectionWidth, Align.right, false);
+        font.draw(batch, String.format(Locale.getDefault(), "%06d", score), posLeftX, posRow2Y, posSectionWidth, Align.left, false);
+        font.draw(batch, String.format(Locale.getDefault(), "%02d", nivel),  posCentreX, posRow2Y, posSectionWidth, Align.center, false);
+        font.draw(batch, String.format(Locale.getDefault(), "%02d", playerLives), posRightX, posRow2Y, posSectionWidth, Align.right, false);
 
     }
 
@@ -125,5 +122,4 @@ public class ScoreLActor extends Actor {
         this.detectedCollisionPlayer = detectedCollisionPlayer;
     }
 
-    public void detach(){ }
 }

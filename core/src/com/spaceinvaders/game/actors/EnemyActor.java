@@ -81,6 +81,7 @@ public class EnemyActor extends Actor {
         frameActual = (TextureRegion) animation.getKeyFrames()[0];
     }
 
+    public boolean isAlive() { return isAlive; }
 
     public void setAlive(boolean sw) { isAlive = sw; }
     public void setStart(boolean start) { this.start = start; }

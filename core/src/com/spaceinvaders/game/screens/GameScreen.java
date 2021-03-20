@@ -26,7 +26,6 @@ public class GameScreen extends BasicScreen {
     public PlayerShipActor playerShipActor;
 
     public BalaController balaController;
-
     public InputController inputController;
 
     public int score = 0;
@@ -37,10 +36,7 @@ public class GameScreen extends BasicScreen {
 
     public GameScreen(MainGame game) {
         super(game);
-        init();
-    }
 
-    public void init() {
         nivel = 1;
         subiNivel = false;
 
@@ -50,29 +46,21 @@ public class GameScreen extends BasicScreen {
         inputController = new InputController();
         Gdx.input.setInputProcessor(inputController);
 
-        enemyTexture = game.getManager().get("sprite3.png");
         playerShipTexture = game.getManager().get("nave.png");
         balaPlayerTexture = game.getManager().get("balaPlayer.png");
         balaEnemyTexture = game.getManager().get("balaEnemy.png");
 
-//        playerShipActor = new PlayerShipActor(playerShipTexture, new Vector2(WIDTH /2, 0));
-//        enemies = new EnemyController(enemyTexture, playerShipActor.getPosition());
-//
-//        scoreLActor = new ScoreLActor(playerShipActor, score);
-//
-//        balaController = new BalaController(balaPlayerTexture, balaEnemyTexture, playerShipActor.getPosition(), playerShipActor.getWidth(), playerShipActor.getHeight(), enemies.objects, inputController, score, scoreLActor);
-
         cargarEntitiesInit();
-
-//        stage.addActor(scoreLActor);
-//
-//        stage.addActor(playerShipActor);
-//        for (EnemyActor enemy: enemies.objects)
-//            stage.addActor(enemy);
-
     }
 
     private void cargarEntitiesInit(){
+
+        if(nivel == 1){
+            enemyTexture = game.getManager().get("sprite3.png");
+        }else{
+            enemyTexture = game.getManager().get("spriteN2.png");
+        }
+
         playerShipActor = new PlayerShipActor(playerShipTexture, new Vector2(WIDTH /2, 0));
 
         enemies = new EnemyController(enemyTexture, playerShipActor.getPosition(), nivel);
@@ -97,59 +85,11 @@ public class GameScreen extends BasicScreen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.3f,0.1f,1f,1.0f);
-        //Gdx.gl.glClearColor(0.5f,0.5f,1f,1.0f);
-        //Gdx.gl.glClearColor(0.2f,0.5f,1f,1.0f);
-        //Gdx.gl.glClearColor(0.2f,0.5f,0.8f,1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        gameOverControl();
 
-        if (playerShipActor.getLives() == 0){
-            System.out.println("==========GAME OVER===========");
-
-            stage.addAction(Actions.sequence(
-                    Actions.delay(0.5f),
-                    Actions.run(new Runnable() {
-                        @Override
-                        public void run() {
-                            game.setScreen(game.gameOverScreen);
-                        }
-                    })
-            ));
-        }
-
-        //sube de nivel
-        if (enemies.objects.size() == 0){
-            if (!subiNivel){
-                subiNivel = true;
-                nivel = nivel + 1;
-                //reinicio el juego con mas velocidad
-
-                //limpio de pantalla
-                stage.clear();
-                playerShipActor.remove();
-
-                cargarEntitiesInit();
-
-            }else{
-                if (nivel == 2){ //si sera nivel 2
-                    System.out.println("Juego terminado! Felicidades es el ganador! ");
-                    stage.addAction(Actions.sequence(
-                            Actions.delay(0.5f),
-                            Actions.run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    game.setScreen(game.gameOverScreen);
-                                }
-                            })
-                    ));
-//                    try {
-//                        Thread.sleep(10000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-                }
-            }
-        }
+        subioNivel();
 
         balaController.shoot(stage);
         balaController.shootBalaEnemyT(stage);
@@ -173,6 +113,55 @@ public class GameScreen extends BasicScreen {
         scoreLActor.remove();
     }
 
+    public void gameOverControl(){
+        if (playerShipActor.getLives() == 0){
+            System.out.println("==========GAME OVER===========");
+
+            stage.addAction(Actions.sequence(
+                    Actions.delay(0.5f),
+                    Actions.run(new Runnable() {
+                        @Override
+                        public void run() {
+                            game.changeTextureScreen(false);
+                            game.setScreen(game.gameSOScreen);
+                        }
+                    })
+            ));
+        }
+    }
+
+    public void subioNivel(){
+        //sube de nivel
+        if (enemies.objects.size() == 0 || enemies.allDied()){
+            if (!subiNivel){
+                subiNivel = true;
+                nivel = nivel + 1;
+                //reinicio el juego con mas velocidad
+
+                //limpio de pantalla
+                stage.clear();
+                playerShipActor.remove();
+
+                cargarEntitiesInit();
+
+            }else{
+                if (nivel == 2){ //si sera nivel 2
+                    System.out.println("Juego terminado! Felicidades es el ganador! ");
+                    stage.addAction(Actions.sequence(
+                            Actions.delay(0.5f),
+                            Actions.run(new Runnable() {
+                                @Override
+                                public void run() {
+                                    game.changeTextureScreen(true);
+                                    game.setScreen(game.gameSOScreen);
+                                }
+                            })
+                    ));
+                }
+            }
+        }
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
@@ -182,23 +171,3 @@ public class GameScreen extends BasicScreen {
         balaEnemyTexture.dispose();
     }
 }
-
-/*
-*
-        if (enemies.objects.size() == 0 && !subiNivel){ //ya no hay enemigos, todo se reinicia pero en nivel 2, omg, como hago eso wey
-
-            //subi nivel
-            subiNivel = true;
-            //nivel aumenta
-
-            nivel = nivel + 1;
-            //la velocidad aumenta
-
-            //puedo llamar al init y tener una bandera para que solo lo haga una vez, pero cuando sea 2do nivel, 2 veces por asi decirlo
-            //el juego termine, y el mensaje sera, GANASTE O ALGO ASI no?
-
-            if (nivel == 2){
-                System.out.println("Juego terminado! Felicidades es el ganador! ñe");
-            }
-        }
-*/

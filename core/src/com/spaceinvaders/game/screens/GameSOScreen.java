@@ -17,35 +17,46 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import static com.spaceinvaders.game.common.Constants.HEIGHT;
 import static com.spaceinvaders.game.common.Constants.WIDTH;
 
-public class GameOverScreen extends BasicScreen{
+public class GameSOScreen extends BasicScreen{
 
     private Stage stage;
     private Viewport vp;
+    private Texture texture;
     private Skin skin;
     private Image gameover;
-    private TextButton retry, menu;
+    private TextButton retry;
     private float dx;
     private Vector2 size, retryButtonPos;
+    private boolean inicio;
+    private String texto;
+    private Vector2 positionTexture, sizeTitle;
 
-    public GameOverScreen(final MainGame game) {
+    public GameSOScreen(final MainGame game) {
         super(game);
+        this.inicio = true;
         this.dx = 320;
         this.size = new Vector2(200,80);
+        this.sizeTitle = new Vector2(450,225);
 
-        //this.retryButtonPos = new Vector2(WIDTH / 2 - retry.getWidth(),60);
-        //this.retryButtonPos = new Vector2(60,60);
+        vp = new FitViewport(WIDTH, HEIGHT);
+        stage = new Stage(vp);
+
+        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         init();
     }
 
     public void init(){
-        vp = new FitViewport(WIDTH, HEIGHT);
-        stage = new Stage(vp);
+        if (inicio){
+            texture = game.getManager().get("title1.png");
+            texto = "Jugar";
+        }else{
+            texture = game.getManager().get("gameover.png");
+            texto = "Reintentar";
+        }
 
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-        Texture texture = game.getManager().get("gameover.png");
         gameover = new Image(texture);
-        retry = new TextButton("Retry", skin);
+        retry = new TextButton(texto, skin);
 
         this.retryButtonPos = new Vector2((WIDTH / 2) - (size.x / 2),60);
 
@@ -59,8 +70,14 @@ public class GameOverScreen extends BasicScreen{
             }
         });
 
-        //gameover.setPosition(gameover.getWidth() / 6 , gameover.getHeight() * 4);
-        gameover.setPosition(dx - gameover.getWidth() / 2 , dx - gameover.getHeight() );
+        if (inicio){
+            gameover.setSize(sizeTitle.x, sizeTitle.y);
+            positionTexture = new Vector2(dx - gameover.getWidth() / 2 , dx - (gameover.getHeight() / 2) - 30);
+        } else {
+            positionTexture = new Vector2(dx - gameover.getWidth() / 2 , dx - gameover.getHeight() );
+        }
+
+        gameover.setPosition(positionTexture.x, positionTexture.y);
 
         retry.setSize(size.x, size.y);
 
@@ -68,25 +85,29 @@ public class GameOverScreen extends BasicScreen{
 
         stage.addActor(retry);
         stage.addActor(gameover);
+    }
 
+
+    public void setInicio(boolean inicio) {
+        this.inicio = inicio;
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
-        //Gdx.input.setInputProcessor(stage); //Procesa eventos de todas las entradas
+        init();
+        Gdx.input.setInputProcessor(stage); //Procesa eventos de todas las entradas
     }
 
     @Override
     public void hide() {
-        Gdx.input.setInputProcessor(null); //para que ya no trate estas entradas cuando cambie la pantalla
+        stage.clear();
+        Gdx.input.setInputProcessor(null); //ya no trata las entradas cuando cambie la pantalla
     }
 
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.4f,0.1f,0.8f,1);
-        //Gdx.gl.glClearColor(0.3f,0.1f,1f,1.0f);
+        Gdx.gl.glClearColor(0.5f,0.3f,0.8f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(); //actualiza el stage
